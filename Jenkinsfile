@@ -1,46 +1,27 @@
 pipeline {
-    
-    agent none
-        
+    agent any
     stages {
-        stage('Build') {
-            agent { 
-                label ""
-                }
-            }
+        stage('Example') {
+            post { always { slackSend channel: '#general', color: 'good', message: 'The pipeline ${currentBuild.fullDisplayName} ${env.JOB_NAME} has started....'}}
             steps {
-
-                post {
-                  always {
-                    slackSend channel: '#general',
-                         color: 'good',
-                         message: "test job started"
-                         }
-                    }
-
-                    script {
-                         sh "ping -c 5 google.com"
-                         echo "Complete!"
-                       }
-              
-                 }
-
-               post {
-                  sucess {
-                    slackSend channel: '#general',
-                         color: 'good',
-                         message: "test job completed"
-                         }
-
+                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+                sh "/bin/ping -c 5 google.com"
+            }
+        }
+    }
+    
+    post {
+        
                   failure {
                     slackSend channel: '#general',
                          color: 'bad',
-                         message: "test job failed"
-                         }       
-                    
+                         message: "The pipeline ${currentBuild.fullDisplayName} FAILED to complete sucessfully."
+                         }
 
-                    }   
-
-             }
-
-        }
+                  success {
+                    slackSend channel: '#general',
+                         color: 'good',
+                         message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
+                         }
+                     }
+}
