@@ -1,54 +1,46 @@
 pipeline {
+    
+    agent none
+        
+    stages {
+        stage('Build') {
+            agent { 
+                label ""
+                }
+            }
+            steps {
 
-  agent {
-    label ""
-  }
-  
-  
-  environment {
-    FOO = "BAR"
-  }
-  
-  stages {
-    stage("first stage") {
-      
-              post {
+                post {
                   always {
                     slackSend channel: '#general',
                          color: 'good',
-                         message: "starting the build, pending your approval:"
+                         message: "test job started"
                          }
-            }
-         
-         input 'okay to proceed with stage 1:'
+                    }
 
-         steps {
-     
-        timeout(time: true, uint: 'MINUTES') {
-          echo "We're not doing anything particularly special here."
-          echo "Just making sure that we don't take longer than five minutes"
-          echo "Which, I guess, is kind of silly."
-          
-          sh "/bin/ping -c 2 google.com" 
-        }
-      }
-      
-      post {
+                    script {
+                         sh "ping -c 5 google.com"
+                         echo "Complete!"
+                       }
+              
+                 }
+
+               post {
+                  sucess {
+                    slackSend channel: '#general',
+                         color: 'good',
+                         message: "test job completed"
+                         }
+
                   failure {
                     slackSend channel: '#general',
                          color: 'bad',
-                         message: "The pipeline failed"
-                         }
+                         message: "test job failed"
+                         }       
+                    
 
-                   sucess {
-                    slackSend channel: '#general',
-                         color: 'good',
-                         message: "The pipeline completed sucessfully"
-                         }
-                    }
- 
+                    }   
+
+             }
+
         }
-
-      }
-   }
-    
