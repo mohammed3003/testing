@@ -14,8 +14,8 @@ pipeline {
         
                   failure {
                     slackSend channel: '#general',
-                         color: 'red',
-                         message: "The pipeline ${currentBuild.fullDisplayName} FAILED to complete sucessfully."
+                         color: 'danger',
+                         message: "The pipeline ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) FAILED to complete sucessfully."
                          }
 
                   success {
