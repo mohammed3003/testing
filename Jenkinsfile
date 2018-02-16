@@ -4,7 +4,7 @@ pipeline {
         stage('Example') {
             post { always { slackSend channel: '#general', color: 'good', message: 'The pipeline ${currentBuild.fullDisplayName} ${env.JOB_NAME} has started....'}}
             steps {
-                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL} (<${env.BUILD_URL}|Open>)"
                 sh "/bin/ping -c 5 google.com"
             }
         }
@@ -15,13 +15,13 @@ pipeline {
                   failure {
                     slackSend channel: '#general',
                          color: 'danger',
-                         message: "The pipeline ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) FAILED to complete sucessfully."
+                         message: "The pipeline ${env.JOB_NAME} ${env.BUILD_NUMBER} FAILED to complete sucessfully: (<${env.BUILD_URL}|Open>)"
                          }
 
                   success {
                     slackSend channel: '#general',
                          color: 'good',
-                         message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
+                         message: "The pipeline ${currentBuild.fullDisplayName} completed successfully: (<${env.BUILD_URL}|Open>)"
                          }
                      }
 }
