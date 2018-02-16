@@ -5,7 +5,7 @@ pipeline {
             post { always { slackSend channel: '#general', color: 'good', message: 'The pipeline ${currentBuild.fullDisplayName} ${env.JOB_NAME} has started....'}}
             steps {
                 echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-                sh "/bin/ping -c 5 google.com"
+                sh "/bin/ping -c 5 google.cm"
             }
         }
     }
