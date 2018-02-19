@@ -24,7 +24,7 @@ pipeline {
                          message: "The pipeline ${currentBuild.fullDisplayName} completed successfully: (<${env.BUILD_URL}|Open>)"
                       
                     
-                      input message: "Image ${WORDPRESS}:$TAG has been released to stage, please test and confirm..."
+                      input message: "Image TAG has been released to stage, please test and confirm..."
                       
                          }
             
